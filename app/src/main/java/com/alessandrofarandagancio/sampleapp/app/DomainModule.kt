@@ -7,6 +7,8 @@ import com.alessandrofarandagancio.sampleapp.domain.repository.CountryRepository
 import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryUseCase
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
@@ -19,9 +21,19 @@ interface DomainModule {
 
 class DomainModuleImpl : DomainModule {
     override val countryApi: CountryApi by lazy {
+
+        val loggingInterceptor = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BASIC
+        }
+
+        val okHttpClient = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+
         Retrofit.Builder()
             .baseUrl(BASE_COUNTRY_URL)
             .addConverterFactory(GsonConverterFactory.create(Gson()))
+            .client(okHttpClient)
             .build()
             .create()
     }
