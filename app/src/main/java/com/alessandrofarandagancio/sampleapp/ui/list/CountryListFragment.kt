@@ -34,7 +34,12 @@ class CountryListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCountriesListBinding.inflate(layoutInflater)
-
+        binding.recyclerView.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                LinearLayoutManager.VERTICAL
+            )
+        )
         lifecycleScope.launch {
             viewModel.countryListStateStateFlow.collectLatest {
                 if (it.isLoading) {
@@ -50,13 +55,6 @@ class CountryListFragment : Fragment() {
                     binding.emptyList.root.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
                 }
-
-                binding.recyclerView.addItemDecoration(
-                    DividerItemDecoration(
-                        context,
-                        LinearLayoutManager.VERTICAL
-                    )
-                )
 
                 it.countries.also { list ->
                     if (binding.recyclerView.adapter == null) {

@@ -35,7 +35,7 @@ class DomainModuleImpl : DomainModule {
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .client(okHttpClient)
             .build()
-            .create()
+            .create(CountryApi::class.java)
     }
     override val countryRepository: CountryRepository by lazy {
         ApiCountryRepository(countryApi, Dispatchers.IO)
