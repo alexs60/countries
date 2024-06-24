@@ -14,14 +14,14 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 
 interface DomainModule {
+    val retrofit: Retrofit
     val countryApi: CountryApi
     val countryRepository: CountryRepository
     val getCountryUseCase: GetCountryUseCase
 }
 
 class DomainModuleImpl : DomainModule {
-    override val countryApi: CountryApi by lazy {
-
+    override val retrofit: Retrofit by lazy {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BASIC
         }
@@ -35,7 +35,9 @@ class DomainModuleImpl : DomainModule {
             .addConverterFactory(GsonConverterFactory.create(Gson()))
             .client(okHttpClient)
             .build()
-            .create(CountryApi::class.java)
+    }
+    override val countryApi: CountryApi by lazy {
+        retrofit.create(CountryApi::class.java)
     }
     override val countryRepository: CountryRepository by lazy {
         ApiCountryRepository(countryApi, Dispatchers.IO)
