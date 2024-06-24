@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alessandrofarandagancio.sampleapp.databinding.FragmentCountriesListBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
@@ -48,6 +50,13 @@ class CountryListFragment : Fragment() {
                     binding.emptyList.root.visibility = View.GONE
                     binding.recyclerView.visibility = View.VISIBLE
                 }
+
+                binding.recyclerView.addItemDecoration(
+                    DividerItemDecoration(
+                        context,
+                        LinearLayoutManager.VERTICAL
+                    )
+                )
 
                 it.countries.also { list ->
                     if (binding.recyclerView.adapter == null) {
