@@ -3,6 +3,7 @@ package com.alessandrofarandagancio.sampleapp.app;
 import android.content.Context
 import android.net.ConnectivityManager
 import com.alessandrofarandagancio.sampleapp.common.NetworkHelper
+import com.alessandrofarandagancio.sampleapp.common.NetworkHelperImpl
 
 interface AppModule {
     val connectivityManager: ConnectivityManager
@@ -14,6 +15,6 @@ class AppModuleImpl(private val appContext: Context) : AppModule {
         appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
     override val networkHelper: NetworkHelper by lazy {
-        NetworkHelper(connectivityManager)
+        NetworkHelperImpl(connectivityManager)
     }
 }
