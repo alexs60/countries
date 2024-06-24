@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SampleApp</string>
+
+    <string name="head_value">Country Name, CN</string>
+    <string name="description_value">Capital Name</string>
+    <string name="right_value">CN</string>
+    <string name="conntent_description_loaditem">LoadItem</string>
+    <string name="empty_title_value">No countries fetched yet.</string>
+</resources>
