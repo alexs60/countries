@@ -1,6 +1,8 @@
 package com.alessandrofarandagancio.sampleapp.domain
 
-sealed class Resource<T>(val data: T? = null, val message: String? = null) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Error<T>(data: T? = null, message: String) : Resource<T>(data, message)
+
+interface BaseError
+sealed interface Resource<out D, out E : BaseError> {
+    class Success<out D, out E : BaseError>(val data: D) : Resource<D, E>
+    class Failure<out D, out E : BaseError>(val error: E) : Resource<D, E>
 }

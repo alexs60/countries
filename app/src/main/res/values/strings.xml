@@ -6,4 +6,7 @@
     <string name="right_value">CN</string>
     <string name="conntent_description_loaditem">LoadItem</string>
     <string name="empty_title_value">No countries fetched yet.</string>
+    <string name="no_connection_error">Check your connection and retry!\n</string>
+    <string name="network_error">There were network issue retry, if the problem persist contact the support.</string>
+    <string name="unexpected_error">This is embarrassing! An unexpected issue occurred. If the problem persist contact the support.</string>
 </resources>

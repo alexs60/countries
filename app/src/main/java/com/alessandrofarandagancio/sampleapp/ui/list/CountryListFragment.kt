@@ -10,7 +10,9 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alessandrofarandagancio.sampleapp.R
 import com.alessandrofarandagancio.sampleapp.databinding.FragmentCountriesListBinding
+import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryError
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -74,7 +76,12 @@ class CountryListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.countryListStateStateFlow.collectLatest {
                 if (it.errors.isNotEmpty()) {
-                    Snackbar.make(binding.root, it.errors.pop(), Snackbar.LENGTH_SHORT).show()
+                    val currentError = when(it.errors.pop()){
+                        GetCountryError.NO_CONNECTION -> getString(R.string.no_connection_error)
+                        GetCountryError.NETWORK_ERROR -> getString(R.string.network_error)
+                        GetCountryError.UNEXPECTED_ERROR -> getString(R.string.unexpected_error)
+                    }
+                    Snackbar.make(binding.root, currentError, Snackbar.LENGTH_SHORT).show()
                 }
             }
         }

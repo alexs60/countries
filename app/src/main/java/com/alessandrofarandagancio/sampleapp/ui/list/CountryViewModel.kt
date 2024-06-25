@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.alessandrofarandagancio.sampleapp.app.ThisApplication
-import com.alessandrofarandagancio.sampleapp.domain.Resource
 import com.alessandrofarandagancio.sampleapp.common.viewModelFactory
+import com.alessandrofarandagancio.sampleapp.domain.Resource
+import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryError
 import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,13 +33,13 @@ class CountryViewModel(
             _uiStateStateFlow.emit(_uiStateStateFlow.value.copy(isLoading = true))
             getCountryUseCase().collectLatest { result ->
                 when (result) {
-                    is Resource.Success -> result.data?.let {
-                        _uiStateStateFlow.emit(CountryListState(countries = it))
+                    is Resource.Success -> {
+                        _uiStateStateFlow.emit(CountryListState(countries = result.data))
                     }
 
-                    is Resource.Error -> result.message?.let {
-                        val errors = Stack<String>()
-                        errors.push(it)
+                    is Resource.Failure -> {
+                        val errors = Stack<GetCountryError>()
+                        errors.push(result.error)
                         _uiStateStateFlow.emit(
                             _uiStateStateFlow.value.copy(
                                 isLoading = false,
