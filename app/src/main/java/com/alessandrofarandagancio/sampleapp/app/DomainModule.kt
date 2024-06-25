@@ -24,9 +24,9 @@ class DomainModuleImpl : DomainModule {
         ThisApplication.appModule.retrofit.create(CountryApi::class.java)
     }
     override val countryRepository: CountryRepository by lazy {
-        ApiCountryRepository(countryApi, Dispatchers.IO)
+        ApiCountryRepository(countryApi, ThisApplication.appModule.networkHelper, Dispatchers.IO)
     }
     override val getCountryUseCase: GetCountryUseCase by lazy {
-        GetCountryUseCase(countryRepository, ThisApplication.appModule.networkHelper)
+        GetCountryUseCase(countryRepository)
     }
 }

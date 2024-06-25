@@ -11,8 +11,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alessandrofarandagancio.sampleapp.R
+import com.alessandrofarandagancio.sampleapp.data.repository.GetCountryError
 import com.alessandrofarandagancio.sampleapp.databinding.FragmentCountriesListBinding
-import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryError
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -76,10 +76,12 @@ class CountryListFragment : Fragment() {
         lifecycleScope.launch {
             viewModel.countryListStateStateFlow.collectLatest {
                 if (it.errors.isNotEmpty()) {
-                    val currentError = when(it.errors.pop()){
+                    @Suppress("WHEN_ENUM_CAN_BE_NULL_IN_JAVA")
+                    val currentError = when (it.errors.pop()) {
                         GetCountryError.NO_CONNECTION -> getString(R.string.no_connection_error)
                         GetCountryError.NETWORK_ERROR -> getString(R.string.network_error)
                         GetCountryError.UNEXPECTED_ERROR -> getString(R.string.unexpected_error)
+                        GetCountryError.TIMEOUT -> getString(R.string.timeout_error)
                     }
                     Snackbar.make(binding.root, currentError, Snackbar.LENGTH_SHORT).show()
                 }

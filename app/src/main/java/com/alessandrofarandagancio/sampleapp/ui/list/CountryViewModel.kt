@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.alessandrofarandagancio.sampleapp.app.ThisApplication
 import com.alessandrofarandagancio.sampleapp.common.viewModelFactory
+import com.alessandrofarandagancio.sampleapp.data.repository.GetCountryError
 import com.alessandrofarandagancio.sampleapp.domain.Resource
-import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryError
 import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
