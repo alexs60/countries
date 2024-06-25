@@ -9,6 +9,7 @@ import com.alessandrofarandagancio.sampleapp.domain.use_case.GetCountryUseCase
 import com.alessandrofarandagancio.sampleapp.get_countries.datas.TestCountriesRepository
 import com.alessandrofarandagancio.sampleapp.get_countries.datas.TestNetworkHelper
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.flow.take
 import kotlinx.coroutines.runBlocking
@@ -50,20 +51,22 @@ class GetCountriesUnitTest {
 
     @Before
     fun sutUp() {
-        getCountryUseCase = GetCountryUseCase(TestCountriesRepository(list), TestNetworkHelper())
+        getCountryUseCase = GetCountryUseCase(TestCountriesRepository(list))
     }
 
     @Test
     fun `Get Countries From Use Case, size`() = runBlocking {
-        getCountryUseCase().take(1).collect {
-            assert(it is Resource.Success)
-        }
+        val result = getCountryUseCase().last()
+        assert(result is Resource.Success)
+
     }
 
     @Test
     fun `Get Countries From Use Case, mapped content`() = runBlocking {
-        getCountryUseCase().take(1).collect {
-            assert(it.data?.contains(countryDto.toCountry()) ?: false)
+        val result = getCountryUseCase().last()
+        when (result) {
+            is Resource.Failure -> assert(false)
+            is Resource.Success -> assert(result.data.contains(countryDto.toCountry()))
         }
     }
 }

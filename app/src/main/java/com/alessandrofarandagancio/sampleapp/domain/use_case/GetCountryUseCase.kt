@@ -9,8 +9,6 @@ import com.alessandrofarandagancio.sampleapp.domain.model.toCountry
 import com.alessandrofarandagancio.sampleapp.domain.repository.CountryRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import okio.IOException
-import java.net.SocketTimeoutException
 
 class GetCountryUseCase(
     private val repository: CountryRepository
@@ -19,10 +17,16 @@ class GetCountryUseCase(
     operator fun invoke(): Flow<Resource<List<Country>, GetCountryError>> = flow {
         try {
             when (val result = repository.getCountries()) {
-                is Failure -> emit(Failure(error = result.error))
-                is Success -> emit(Success(data = result.data.map { it.toCountry() }))
+                is Failure -> {
+                    emit(Failure(error = result.error))
+                }
+                is Success -> {
+                    val data = result.data.map { it.toCountry() }
+                    emit(Success(data = data))
+                }
             }
         } catch (e: Exception) {
+            e.printStackTrace()
             emit(Failure(error = GetCountryError.UNEXPECTED_ERROR))
         }
     }
